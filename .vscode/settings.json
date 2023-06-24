@@ -7,4 +7,13 @@
     "code-runner.runInTerminal": true,
     "code-runner.saveFileBeforeRun": true,
     "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 4 }",
+    "python.formatting.provider": "black",
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true,
+        "source.fixAll": true,
+    },
+    "editor.formatOnSave": true,
+    "python.linting.mypyEnabled": false,
+    "python.analysis.typeCheckingMode": "basic",
+    
 }
