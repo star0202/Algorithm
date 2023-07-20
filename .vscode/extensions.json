@@ -1,11 +1,11 @@
 {
-    "recommendations": [
-        "ms-vscode.cpptools",
-        "ms-python.isort",
-        "ms-python.vscode-pylance",
-        "ms-python.python",
-        "ms-python.black-formatter",
-        "formulahendry.code-runner",
-        "DivyanshuAgrawal.competitive-programming-helper"
-    ]
+  "recommendations": [
+    "ms-vscode.cpptools",
+    "ms-python.isort",
+    "ms-python.vscode-pylance",
+    "ms-python.python",
+    "ms-python.black-formatter",
+    "formulahendry.code-runner",
+    "DivyanshuAgrawal.competitive-programming-helper"
+  ]
 }

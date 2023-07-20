@@ -1,19 +1,13 @@
 {
-    "configurations": [
-        {
-            "name": "Win32",
-            "includePath": [
-                "${workspaceFolder}/**"
-            ],
-            "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE"
-            ],
-            "windowsSdkVersion": "10.0.22000.0",
-            "compilerPath": "C:\\msys64\\usr\\bin\\g++.exe",
-            "cppStandard": "gnu++20"
-        }
-    ],
-    "version": 4
+  "configurations": [
+    {
+      "name": "Win32",
+      "includePath": ["${workspaceFolder}/**"],
+      "defines": ["_DEBUG", "UNICODE", "_UNICODE"],
+      "windowsSdkVersion": "10.0.22000.0",
+      "compilerPath": "C:\\msys64\\usr\\bin\\g++.exe",
+      "cppStandard": "gnu++20"
+    }
+  ],
+  "version": 4
 }
