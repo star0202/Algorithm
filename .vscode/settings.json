@@ -2,7 +2,7 @@
   "C_Cpp.default.cppStandard": "gnu++20",
   "C_Cpp.default.intelliSenseMode": "linux-gcc-x64",
   "code-runner.executorMap": {
-    "cpp": "cd $dir && g++ -std=c++20 -O2 -Wall $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
+    "cpp": "cd $dir && g++ $fileName -O2 -Wall -lm -static -std=c++20 -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
   },
   "code-runner.runInTerminal": true,
   "code-runner.saveFileBeforeRun": true,
