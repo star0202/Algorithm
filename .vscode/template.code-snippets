@@ -8,7 +8,7 @@
       "using namespace std;",
       "",
       "int main() {",
-      "\tiostream::sync_with_stdio(false);",
+      "\tios::sync_with_stdio(0);",
       "\tcin.tie(0);",
       "}"
     ],
