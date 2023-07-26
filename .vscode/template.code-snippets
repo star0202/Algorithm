@@ -1,0 +1,23 @@
+{
+  "cpp": {
+    "scope": "cpp",
+    "prefix": "tpl",
+    "body": [
+      "#include <bits/stdc++.h>",
+      "",
+      "using namespace std;",
+      "",
+      "int main() {",
+      "\tiostream::sync_with_stdio(false);",
+      "\tcin.tie(0);",
+      "}"
+    ],
+    "description": "template BOJ C++ Code"
+  },
+  "python": {
+    "scope": "python",
+    "prefix": "tpl",
+    "body": ["from sys import stdin", "", "input = stdin.readline"],
+    "description": "template BOJ Python Code"
+  }
+}
