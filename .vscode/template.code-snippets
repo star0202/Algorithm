@@ -8,16 +8,16 @@
       "using namespace std;",
       "",
       "int main() {",
-      "\tios::sync_with_stdio(0);",
-      "\tcin.tie(0);",
-      "}"
+      "  cin.tie(0)->sync_with_stdio(0);",
+      "}",
+      ""
     ],
     "description": "template BOJ C++ Code"
   },
   "python": {
     "scope": "python",
     "prefix": "tpl",
-    "body": ["from sys import stdin", "", "input = stdin.readline"],
+    "body": ["from sys import stdin", "", "input = stdin.readline", ""],
     "description": "template BOJ Python Code"
   }
 }
