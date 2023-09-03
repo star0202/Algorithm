@@ -8,7 +8,7 @@
       "using namespace std;",
       "",
       "int main() {",
-      "  cin.tie(0)->sync_with_stdio(0);",
+      "    cin.tie(0)->sync_with_stdio(0);",
       "}",
       ""
     ],
@@ -17,7 +17,7 @@
   "python": {
     "scope": "python",
     "prefix": "tpl",
-    "body": ["from sys import stdin", "", "input = stdin.readline", ""],
+    "body": ["input = open(0).readline"],
     "description": "template BOJ Python Code"
   }
 }
