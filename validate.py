@@ -219,7 +219,6 @@ class Validator:
             ],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            timeout=self.problem.tl * 3 + 2,
         )
 
         if res.returncode != 0:
