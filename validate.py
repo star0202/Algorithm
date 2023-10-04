@@ -154,6 +154,8 @@ class Validator:
         self.code = code
         self.lang = code.split(".")[-1]
 
+        self.compiled = False
+
     def validate(self) -> list[Result]:
         func = None
 
@@ -224,9 +226,11 @@ class Validator:
         if res.returncode != 0:
             return Result(ResultEnum.CE, -1, -1, res.stderr.decode())
 
+        self.compiled = True
+
     def _validate_cpp(self, input: str, output: str) -> Result:
         try:
-            if not path.exists(f"{self.code.split('.')[0]}.exe"):
+            if not self.compiled:
                 if res := self._compile_cpp():
                     return res
 
