@@ -14,11 +14,11 @@ pip insall -r requirements.txt
 ## Validator
 
 ```bash
-python validate.py <code path> // only support C++ and Python3
+python validate.py <code path> # only support C++ and Python3
 ```
 
 ## Minifier
 
 ```bash
-python minify.py <code path> // only support Python3
+python minify.py <code path> # only support Python3
 ```
