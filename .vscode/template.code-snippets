@@ -55,7 +55,7 @@
   "python": {
     "scope": "python",
     "prefix": "tpl",
-    "body": ["input = open(0).readline"],
+    "body": ["stdin = open(0)", "input = lambda: stdin.readline().rstrip()"],
     "description": "Python template"
   }
 }

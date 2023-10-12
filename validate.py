@@ -1,21 +1,24 @@
 from __future__ import annotations
 
-import subprocess
 from enum import Enum
 from glob import glob
 from json import dumps, load
-from os import path, remove
+from os import remove
+from os.path import exists
+from resource import RUSAGE_CHILDREN, getrusage
+from subprocess import PIPE, CompletedProcess, TimeoutExpired, run
 from sys import argv
 from typing import Optional
 
 from bs4 import BeautifulSoup
 from requests import get
 
-PROBLEM_SELECTORS: dict[str, str] = {
-    "title": "#problem_title",
-    "time_limit": "#problem-info > tbody > tr > td:nth-child(1)",
-    "memory_limit": "#problem-info > tbody > tr > td:nth-child(2)",
-}
+
+class Selectors:
+    time_limit = "#problem-info > tbody > tr > td:nth-child(2)"
+    memory_limit = "#problem-info > tbody > tr > td:nth-child(2)"
+    title = "#problem_title"
+
 
 HR = "=" * 20
 
@@ -58,22 +61,9 @@ class ResultEnum(Enum):
     CE = "Compile Error"
     RTE = "Runtime Error"
     TLE = "Time Limit Exceeded"
-    # MLE = "Memory Limit Exceeded"
+    MLE = "Memory Limit Exceeded"
     OLE = "Output Limit Exceeded"
     # PE = "Presentation Error"
-
-
-class Result:
-    def __init__(
-        self, result: ResultEnum, time: float, memory: float, output: str
-    ) -> None:
-        self.result = result
-        self.time = time
-        self.memory = memory
-        self.output = output
-
-    def __repr__(self) -> str:
-        return f"{self.output}\n{self.result.value} / {self.time}s / {calculate_memory(self.memory)}"
 
 
 class Problem:
@@ -88,24 +78,24 @@ class Problem:
 
     @classmethod
     def from_id(cls, id: int) -> Problem:
-        try:
+        if exists(f"_problems/{id}.json"):
             with open(f"_problems/{id}.json", "r") as f:
                 return cls(**load(f))
 
-        except FileNotFoundError:
+        else:
             url = f"https://www.acmicpc.net/problem/{id}"
             req = get(url, headers={"User-Agent": "Mozilla/5.0"})
             soup = BeautifulSoup(req.text, "html.parser")
 
             tl, ml, title = None, None, None
 
-            if tlel := soup.select_one(PROBLEM_SELECTORS["time_limit"]):
+            if tlel := soup.select_one(Selectors.time_limit):
                 tl = float(tlel.text.split()[0])
 
-            if mlel := soup.select_one(PROBLEM_SELECTORS["memory_limit"]):
-                ml = parse_memory(mlel.text)
+            if mlel := soup.select_one(Selectors.memory_limit):
+                ml = parse_memory("".join(mlel.text.split()[:2]))
 
-            if titleel := soup.select_one(PROBLEM_SELECTORS["title"]):
+            if titleel := soup.select_one(Selectors.title):
                 title = titleel.text
 
             samples: list[tuple[str, str]] = []
@@ -116,13 +106,15 @@ class Problem:
                 if (inputel := soup.select_one(f"#sample-input-{cnt}")) and (
                     outputel := soup.select_one(f"#sample-output-{cnt}")
                 ):
-                    samples.append((inputel.text.strip(), outputel.text.strip()))
+                    samples.append((inputel.text.rstrip(), outputel.text.rstrip()))
                     continue
 
                 break
 
             if not (tl and ml and title and samples):
-                raise ValueError("Failed to parse problem")
+                raise ValueError(
+                    f"Failed to parse problem\nTL: {tl}\nML: {ml}\nTitle: {title}\nSamples: {samples}"
+                )
 
             problem = cls(title, id, tl, ml, samples)
 
@@ -147,26 +139,37 @@ class Problem:
         return "\n".join(lines)
 
 
+class Result:
+    def __init__(
+        self, result: ResultEnum, time: float, memory: float, output: str
+    ) -> None:
+        self.result = result
+        self.time = time
+        self.memory = memory
+        self.output = output
+
+    def __repr__(self) -> str:
+        return f"{self.output}\n{self.result.value} / {self.time}s / {calculate_memory(self.memory)}"
+
+
 class Validator:
-    # TODO: find a way to get memory usage and elapsed time, multithreading
+    # TODO: multithreading
     def __init__(self, problem: Problem, code: str) -> None:
         self.problem = problem
         self.code = code
         self.lang = code.split(".")[-1]
 
         self.compiled = False
+        self.before_time = 0
 
     def validate(self) -> list[Result]:
         func = None
 
-        match self.lang:
-            case "py":
-                func = self._validate_py
-
-            case "cpp":
-                func = self._validate_cpp
-
-        if not func:
+        if self.lang == "py":
+            func = self._validate_py
+        elif self.lang == "cpp":
+            func = self._validate_cpp
+        else:
             raise NotImplementedError
 
         results: list[Result] = []
@@ -180,34 +183,47 @@ class Validator:
 
         return results
 
+    def _validate(self, process: CompletedProcess, ans: str) -> Result:
+        rusages = getrusage(RUSAGE_CHILDREN)
+
+        elapsed = rusages.ru_utime + rusages.ru_stime - self.before_time
+        self.before_time = rusages.ru_utime + rusages.ru_stime
+
+        memory = rusages.ru_maxrss
+
+        if memory > self.problem.ml:
+            return Result(ResultEnum.MLE, elapsed, memory, "")
+
+        if process.returncode != 0:
+            return Result(ResultEnum.RTE, elapsed, memory, process.stderr.decode())
+
+        if (stdout := process.stdout.decode().rstrip()) != ans:
+            if len(stdout) > len(ans) * 2:
+                return Result(ResultEnum.OLE, elapsed, memory, stdout)
+
+            return Result(ResultEnum.WA, elapsed, memory, stdout)
+
+        return Result(ResultEnum.AC, elapsed, memory, stdout)
+
     def _validate_py(self, input: str, output: str) -> Result:
         try:
-            res = subprocess.run(
-                ["python", self.code],
+            res = run(
+                ["pypy3", self.code],
                 input=input.encode(),
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
+                stdout=PIPE,
+                stderr=PIPE,
                 timeout=self.problem.tl * 3 + 2,
             )
 
-            if res.returncode != 0:
-                return Result(ResultEnum.RTE, -1, -1, res.stderr.decode())
+            return self._validate(res, output)
 
-            if (stdout := res.stdout.decode().strip()) != output:
-                if len(stdout) > len(output) * 2:
-                    return Result(ResultEnum.OLE, -1, -1, stdout)
-
-                return Result(ResultEnum.WA, -1, -1, stdout)
-
-            return Result(ResultEnum.AC, -1, -1, stdout)
-
-        except subprocess.TimeoutExpired:
+        except TimeoutExpired:
             return Result(ResultEnum.TLE, -1, -1, "")
 
     def _compile_cpp(self) -> Optional[Result]:
         print("Compiling...")
 
-        res = subprocess.run(
+        res = run(
             [
                 "g++",
                 self.code,
@@ -217,11 +233,15 @@ class Validator:
                 "-static",
                 "-std=c++20",
                 "-o",
-                self.code.split(".")[0],
+                f"{self.code.split('.')[0]}.out",
             ],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            stdout=PIPE,
+            stderr=PIPE,
         )
+
+        rusage = getrusage(RUSAGE_CHILDREN)
+
+        self.before_time = rusage.ru_utime + rusage.ru_stime
 
         if res.returncode != 0:
             return Result(ResultEnum.CE, -1, -1, res.stderr.decode())
@@ -234,26 +254,17 @@ class Validator:
                 if res := self._compile_cpp():
                     return res
 
-            res = subprocess.run(
-                [f"./{self.code.split('.')[0]}"],
+            res = run(
+                [f"./{self.code.split('.')[0]}.out"],
                 input=input.encode(),
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
+                stdout=PIPE,
+                stderr=PIPE,
                 timeout=self.problem.tl,
             )
 
-            if res.returncode != 0:
-                return Result(ResultEnum.RTE, -1, -1, res.stderr.decode())
+            return self._validate(res, output)
 
-            if (stdout := res.stdout.decode().strip()) != output:
-                if len(stdout) > len(output) * 2:
-                    return Result(ResultEnum.OLE, -1, -1, stdout)
-
-                return Result(ResultEnum.WA, -1, -1, stdout)
-
-            return Result(ResultEnum.AC, -1, -1, stdout)
-
-        except subprocess.TimeoutExpired:
+        except TimeoutExpired:
             return Result(ResultEnum.TLE, -1, -1, "")
 
 
