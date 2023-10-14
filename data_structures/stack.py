@@ -52,8 +52,8 @@ class Stack(Generic[T], Iterable[T]):
     def size(self) -> int:
         return len(self._list)
 
-    def push(self, item: T) -> None:
-        self._list.append(item)
+    def push(self, value: T) -> None:
+        self._list.append(value)
 
     def pop(self) -> None:
         self._list.pop()
