@@ -94,7 +94,7 @@ if __name__ == "__main__":
     try:
         q.front()
 
-        raise AssertionError("front() should raise when stack is empty")
+        raise AssertionError("front() should raise when queue is empty")
 
     except IndexError:
         pass
@@ -102,7 +102,7 @@ if __name__ == "__main__":
     try:
         q.back()
 
-        raise AssertionError("back() should raise when stack is empty")
+        raise AssertionError("back() should raise when queue is empty")
 
     except IndexError:
         pass
