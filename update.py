@@ -33,7 +33,7 @@ def main():
         print(f"Updated templates/{name}.{ext}")
 
     with open(".vscode/template.code-snippets", "w") as f:
-        f.write(dumps(json, indent=2))
+        f.write(f"{dumps(json, indent=2)}\n")
 
 
 if __name__ == "__main__":
