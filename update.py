@@ -1,5 +1,12 @@
 from json import dumps
 from os import listdir, path
+from typing import TypedDict
+
+
+class SnippetSchema(TypedDict):
+    scope: str
+    prefix: str
+    body: list[str]
 
 
 def comment(ext: str) -> str:
@@ -12,7 +19,7 @@ def comment(ext: str) -> str:
 
 
 def main():
-    json: dict[str, dict[str, str | list[str]]] = {}
+    json: dict[str, SnippetSchema] = {}
 
     for file in listdir("templates"):
         name, ext = path.splitext(file)
