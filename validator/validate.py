@@ -3,7 +3,7 @@ from __future__ import annotations
 from enum import Enum
 from glob import glob
 from json import dumps, load
-from os import remove
+from os import path, remove, system
 from os.path import exists
 from resource import RUSAGE_CHILDREN, getrusage
 from subprocess import PIPE, CompletedProcess, TimeoutExpired, run
@@ -15,7 +15,7 @@ from requests import get
 
 
 class Selectors:
-    time_limit = "#problem-info > tbody > tr > td:nth-child(2)"
+    time_limit = "#problem-info > tbody > tr > td:nth-child(1)"
     memory_limit = "#problem-info > tbody > tr > td:nth-child(2)"
     title = "#problem_title"
 
@@ -151,6 +151,9 @@ class Result:
     def __repr__(self) -> str:
         return f"{self.output}\n{self.result.value} / {self.time}s / {calculate_memory(self.memory)}"
 
+    def __bool__(self) -> bool:
+        return self.result == ResultEnum.AC
+
 
 class Validator:
     # TODO: multithreading
@@ -205,14 +208,42 @@ class Validator:
 
         return Result(ResultEnum.AC, elapsed, memory, stdout)
 
+    def _compile_py(self) -> Optional[Result]:
+        print("Compiling...")
+
+        res = run(
+            [
+                "pypy3",
+                "-W",
+                "ignore",
+                "-c",
+                f"\"import py_compile; py_compile.compile(r'{self.code}')\"",
+            ],
+            stdout=PIPE,
+            stderr=PIPE,
+        )
+
+        rusage = getrusage(RUSAGE_CHILDREN)
+
+        self.before_time = rusage.ru_utime + rusage.ru_stime
+
+        if res.returncode != 0:
+            return Result(ResultEnum.CE, -1, -1, res.stderr.decode())
+
+        self.compiled = True
+
     def _validate_py(self, input: str, output: str) -> Result:
         try:
+            if not self.compiled:
+                if res := self._compile_py():
+                    return res
+
             res = run(
-                ["pypy3", self.code],
+                ["pypy3", "-W", "ignore", self.code],
                 input=input.encode(),
                 stdout=PIPE,
                 stderr=PIPE,
-                timeout=self.problem.tl * 3 + 2,
+                timeout=self.problem.tl,
             )
 
             return self._validate(res, output)
@@ -276,7 +307,7 @@ def cli() -> None:
 
         return
 
-    id = argv[1].split(".")[0]
+    id = path.split(argv[1])[-1].split(".")[0]
 
     problem = Problem.from_id(int(id))
 
@@ -288,6 +319,13 @@ def cli() -> None:
 
     for i, r in enumerate(res):
         print(f"Sample {i + 1}: {r.result.value}")
+
+    if all(res):
+        print(HR)
+
+        print("All samples passed!")
+        system(f"/mnt/c/Windows/System32/clip.exe < {argv[1]}")
+        print("Copied to clipboard!")
 
 
 if __name__ == "__main__":

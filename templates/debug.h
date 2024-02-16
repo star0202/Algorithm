@@ -1,6 +1,4 @@
-#include <bits/stdc++.h>
-
-using namespace std;
+/* Debugging macro for C++ */
 
 #define debug(...)                                                  \
     cerr << "\033[1;31m"                                            \

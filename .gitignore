@@ -1,3 +1,4 @@
-*.exe
 *.stackdump
 tempCodeRunnerFile*
+*.out
+*.pyc
