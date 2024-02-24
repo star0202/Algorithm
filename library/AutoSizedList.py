@@ -23,6 +23,9 @@ class AutoSizedList(list[T]):
         self.default = default
 
     def resize(self, size: int) -> None:
+        if len(self) == size:
+            return
+
         self.extend([self.default() for _ in range(size - len(self))])
 
     @overload
