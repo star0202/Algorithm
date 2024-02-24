@@ -7,6 +7,10 @@ COMMENT_MAPPING = {
     "cpp": "//",
     "py": "#",
 }
+LANGUAGE_MAPPING = {
+    "cpp": "cpp",
+    "py": "python",
+}
 SNIPPET_FILE = ".vscode/template.code-snippets"
 
 
@@ -19,8 +23,15 @@ class SnippetSchema(TypedDict):
 def comment(ext: str) -> str:
     if ext not in COMMENT_MAPPING:
         raise ValueError(f"Unknown extension {ext}")
-    
+
     return COMMENT_MAPPING[ext]
+
+
+def language(ext: str) -> str:
+    if ext not in LANGUAGE_MAPPING:
+        raise ValueError(f"Unknown extension {ext}")
+
+    return LANGUAGE_MAPPING[ext]
 
 
 def main():
@@ -39,7 +50,7 @@ def main():
             code = f.read()
 
         json[f"{name}-{ext}"] = {
-            "scope": ext,
+            "scope": language(ext),
             "prefix": name,
             "body": code.replace(f"{comment(ext)} code here", "$0").splitlines() + [""],
         }
