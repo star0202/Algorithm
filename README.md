@@ -5,7 +5,9 @@
 - g++
 - PyPy3
 
-## Validator
+## [Validator](./validator)
+
+Code validator for [Baekjoon Online Judge](https://www.acmicpc.net/).
 
 Keep the `_problems` directory in the same directory with the `validator` directory.
 
@@ -16,11 +18,11 @@ pip install -r requirements.txt
 python validate.py <code path> # only support C++ and PyPy3
 ```
 
-## Templates
+## [Templates](./templates)
 
-All templates are in `./templates` directory.
+My templates for Problem Solving and Competitive Programming.
 
-After editing the templates, run `python update.py` to update the snippets.
+After editing the templates, run `python update.py` to update the VSCode snippets.
 
 ### C++
 
@@ -32,3 +34,7 @@ After editing the templates, run `python update.py` to update the snippets.
 ### Python
 
 - `ps.py`: Problem Solving template. snippet: `ps`
+
+## Library
+
+My experimental library for Problem Solving and Competitive Programming.
