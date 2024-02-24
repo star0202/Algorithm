@@ -35,6 +35,6 @@ After editing the templates, run `python update.py` to update the VSCode snippet
 
 - `ps.py`: Problem Solving template. snippet: `ps`
 
-## Library
+## [Library](./library)
 
 My experimental library for Problem Solving and Competitive Programming.
