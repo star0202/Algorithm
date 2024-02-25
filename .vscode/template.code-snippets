@@ -48,11 +48,11 @@
       "def main() -> None:",
       "    $0",
       "",
-      "    stdout.write(\"\".join(_out))",
-      "",
       "",
       "if __name__ == \"__main__\":",
       "    main()",
+      "",
+      "    stdout.write(\"\".join(_out))",
       ""
     ]
   },
