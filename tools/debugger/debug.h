@@ -36,7 +36,7 @@ using namespace std;
 #define STRING BR_GREEN
 #define BOOL BR_GREEN
 #define CONTAINER BLUE
-#define COMMA GRAY
+#define SEP GRAY
 #define OPERATOR BOLD + CYAN
 #define INDENT "  "
 
@@ -46,6 +46,8 @@ string _to_str(T x);
 string to_string(string s) { return STRING + '"' + s + '"' + RESET; }
 
 string to_string(char c) { return STRING + "'" + c + "'" + RESET; }
+
+string to_string(char *s) { return to_string((string)s); }
 
 string to_string(const char *s) { return to_string((string)s); }
 
@@ -61,27 +63,100 @@ template <class T>
 struct is_iterable<set<T>> : true_type {};
 
 template <class T>
+struct is_iterable<unordered_set<T>> : true_type {};
+
+template <class T>
+struct is_iterable<multiset<T>> : true_type {};
+
+template <class T>
 struct is_iterable<deque<T>> : true_type {};
 
 template <class T>
 struct is_iterable<vector<T>> : true_type {};
 
 template <class T>
+struct is_iterable<list<T>> : true_type {};
+
+template <class T>
 typename enable_if<is_iterable<T>::value, string>::type to_string(T v) {
     bool first = true;
     string res = CONTAINER + "{ ";
     for (auto &x : v) {
-        res += (first ? "" : COMMA + ", " + CONTAINER) + _to_str(x);
+        res += (first ? "" : SEP + ", " + CONTAINER) + _to_str(x);
         first = false;
     }
     res += CONTAINER + " }" + RESET;
     return res;
 }
 
-template <class T, class V>
-string to_string(pair<T, V> p) {
+template <class T>
+struct is_map : false_type {};
+
+template <class K, class V>
+struct is_map<map<K, V>> : true_type {};
+
+template <class K, class V>
+struct is_map<unordered_map<K, V>> : true_type {};
+
+template <class T>
+typename enable_if<is_map<T>::value, string>::type to_string(T m) {
+    bool first = true;
+    string res = CONTAINER + "{ ";
+    for (auto &[k, v] : m) {
+        res += (first ? "" : SEP + ", " + CONTAINER) + _to_str(k) + SEP + ": " +
+               CONTAINER + _to_str(v);
+        first = false;
+    }
+    res += CONTAINER + " }" + RESET;
+    return res;
+}
+
+template <class T>
+string to_string(stack<T> s) {
+    stack<T> t = s;
+    bool first = true;
+    string res = CONTAINER + "{ ";
+    while (!t.empty()) {
+        res += (first ? "" : SEP + ", " + CONTAINER) + _to_str(t.top());
+        t.pop();
+        first = false;
+    }
+    res += CONTAINER + " }" + RESET;
+    return res;
+}
+
+template <class T>
+string to_string(queue<T> q) {
+    queue<T> t = q;
+    bool first = true;
+    string res = CONTAINER + "{ ";
+    while (!t.empty()) {
+        res += (first ? "" : SEP + ", " + CONTAINER) + _to_str(t.front());
+        t.pop();
+        first = false;
+    }
+    res += CONTAINER + " }" + RESET;
+    return res;
+}
+
+template <class T>
+string to_string(priority_queue<T> pq) {
+    priority_queue<T> t = pq;
+    bool first = true;
+    string res = CONTAINER + "{ ";
+    while (!t.empty()) {
+        res += (first ? "" : SEP + ", " + CONTAINER) + _to_str(t.top());
+        t.pop();
+        first = false;
+    }
+    res += CONTAINER + " }" + RESET;
+    return res;
+}
+
+template <class T, class Tail>
+string to_string(pair<T, Tail> p) {
     auto [first, second] = p;
-    return CONTAINER + "[ " + _to_str(first) + COMMA + ", " + CONTAINER +
+    return CONTAINER + "[ " + _to_str(first) + SEP + ", " + CONTAINER +
            _to_str(second) + CONTAINER + " ]" + RESET;
 }
 
@@ -91,7 +166,7 @@ string to_string(tuple<T...> t) {
     string res = CONTAINER + "{ ";
     apply(
         [&](auto &&...args) {
-            ((res += (first ? "" : COMMA + ", " + CONTAINER) + _to_str(args),
+            ((res += (first ? "" : SEP + ", " + CONTAINER) + _to_str(args),
               first = false),
              ...);
         },
@@ -101,7 +176,8 @@ string to_string(tuple<T...> t) {
 }
 
 template <class T>
-typename enable_if<!is_iterable<T>::value, string>::type to_string(T) {
+typename enable_if<!is_iterable<T>::value && !is_map<T>::value, string>::type
+to_string(T) {
     return ERROR + "Not implemented" + RESET;
 }
 
@@ -117,8 +193,8 @@ void _print_header(string file, int line, string func) {
 
 void _print_value(istream_iterator<string> it) {}
 
-template <class T, class... V>
-void _print_value(istream_iterator<string> it, T a, V... v) {
+template <class T, class... Tail>
+void _print_value(istream_iterator<string> it, T a, Tail... v) {
     cerr << INDENT << *it << OPERATOR << " = " << RESET << _to_str(a) << "\n";
     _print_value(++it, v...);
 }
