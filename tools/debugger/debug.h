@@ -45,6 +45,8 @@ string _to_str(T x);
 
 string to_string(string s) { return STRING + '"' + s + '"' + RESET; }
 
+string to_string(char c) { return STRING + "'" + c + "'" + RESET; }
+
 string to_string(const char *s) { return to_string((string)s); }
 
 string to_string(bool b) { return (b ? "true" : "false"); }
@@ -79,8 +81,8 @@ typename enable_if<is_iterable<T>::value, string>::type to_string(T v) {
 template <class T, class V>
 string to_string(pair<T, V> p) {
     auto [first, second] = p;
-    return CONTAINER + "[" + _to_str(first) + COMMA + ", " + CONTAINER +
-           _to_str(second) + CONTAINER + "]" + RESET;
+    return CONTAINER + "[ " + _to_str(first) + COMMA + ", " + CONTAINER +
+           _to_str(second) + CONTAINER + " ]" + RESET;
 }
 
 template <class... T>
@@ -100,7 +102,7 @@ string to_string(tuple<T...> t) {
 
 template <class T>
 typename enable_if<!is_iterable<T>::value, string>::type to_string(T) {
-    return ERROR + "to_string not implemented" + RESET;
+    return ERROR + "Not implemented" + RESET;
 }
 
 template <class T>

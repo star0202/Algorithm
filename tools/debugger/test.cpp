@@ -16,18 +16,20 @@ void func() {
 }
 
 int main() {
-    int int1 = INT_MAX;
-    i64 int2 = __INT64_MAX__;
-    string str = "hello";
-    vector<int> vec1 = {1, 2, 3};
-    vector<string> vec2 = {"hello", "world"};
-    pair<int, string> pair1 = {5, "hello"};
-    tuple<int, string, vector<int>> tuple1 = {5, "hello", {1, 2, 3}};
-    array<int, 3> arr1 = {1, 2, 3};
-    set<int> set1 = {1, 2, 3};
-    stack<int> unknown1({1, 2, 3});
+    int int_1 = INT_MAX;
+    i64 int_2 = __INT64_MAX__;
+    string string_1 = "hello";
+    char char_1 = 'a';
+    vector<int> vec_1 = {1, 2, 3};
+    vector<vector<int>> vec_2 = {{1, 2, 3}, {4, 5, 6}};
+    pair<int, string> pair_1 = {5, "hello"};
+    tuple<int, string, vector<int>> tuple_1 = {5, "hello", {1, 2, 3}};
+    array<int, 3> array_1 = {1, 2, 3};
+    set<int> set_1 = {1, 2, 3};
+    stack<int> unknown_1({1, 2, 3});
 
-    debug(int1, int2, str, vec1, vec2, pair1, tuple1, arr1, set1, unknown1);
+    debug(int_1, int_2, string_1, char_1, vec_1, vec_2, pair_1, tuple_1,
+          array_1, set_1, unknown_1);
 
     func();
 }
