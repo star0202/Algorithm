@@ -22,11 +22,13 @@ class AutoSizedList(list[T]):
     def __init__(self, default: Callable[[], T]) -> None:
         self.default = default
 
-    def resize(self, size: int) -> None:
+    def resize(self, size: int, allocator: Callable[[], T] | None = None) -> None:
+        allocator = allocator or self.default
+
         if len(self) == size:
             return
 
-        self.extend([self.default() for _ in range(size - len(self))])
+        self.extend([allocator() for _ in range(size - len(self))])
 
     @overload
     def __setitem__(self, index: int, value: T) -> None: ...
