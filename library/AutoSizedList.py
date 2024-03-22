@@ -25,7 +25,7 @@ class AutoSizedList(list[T]):
     def resize(self, size: int, allocator: Callable[[], T] | None = None) -> None:
         allocator = allocator or self.default
 
-        if len(self) == size:
+        if len(self) >= size:
             return
 
         self.extend([allocator() for _ in range(size - len(self))])
