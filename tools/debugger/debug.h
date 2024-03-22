@@ -40,18 +40,7 @@ using namespace std;
 #define OPERATOR BOLD + CYAN
 #define INDENT "  "
 
-template <class T>
-string _to_str(T x);
-
-string to_string(string s) { return STRING + '"' + s + '"' + RESET; }
-
-string to_string(char c) { return STRING + "'" + c + "'" + RESET; }
-
-string to_string(char *s) { return to_string((string)s); }
-
-string to_string(const char *s) { return to_string((string)s); }
-
-string to_string(bool b) { return (b ? "true" : "false"); }
+namespace filter {
 
 template <class T>
 struct is_iterable : false_type {};
@@ -78,7 +67,45 @@ template <class T>
 struct is_iterable<list<T>> : true_type {};
 
 template <class T>
-typename enable_if<is_iterable<T>::value, string>::type to_string(T v) {
+struct is_map : false_type {};
+
+template <class K, class V>
+struct is_map<map<K, V>> : true_type {};
+
+template <class K, class V>
+struct is_map<unordered_map<K, V>> : true_type {};
+
+template <class T>
+struct is_supports_top : false_type {};
+
+template <class T>
+struct is_supports_top<stack<T>> : true_type {};
+
+template <class T>
+struct is_supports_top<priority_queue<T>> : true_type {};
+
+template <class T>
+struct is_implemented {
+    static constexpr bool value =
+        is_iterable<T>::value || is_map<T>::value || is_supports_top<T>::value;
+};
+}  // namespace filter
+
+template <class T>
+string _to_str(T x);
+
+string to_string(string s) { return STRING + '"' + s + '"' + RESET; }
+
+string to_string(char c) { return STRING + "'" + c + "'" + RESET; }
+
+string to_string(char *s) { return to_string((string)s); }
+
+string to_string(const char *s) { return to_string((string)s); }
+
+string to_string(bool b) { return (b ? "true" : "false"); }
+
+template <class T>
+typename enable_if<filter::is_iterable<T>::value, string>::type to_string(T v) {
     bool first = true;
     string res = CONTAINER + "{ ";
     for (auto &x : v) {
@@ -90,16 +117,7 @@ typename enable_if<is_iterable<T>::value, string>::type to_string(T v) {
 }
 
 template <class T>
-struct is_map : false_type {};
-
-template <class K, class V>
-struct is_map<map<K, V>> : true_type {};
-
-template <class K, class V>
-struct is_map<unordered_map<K, V>> : true_type {};
-
-template <class T>
-typename enable_if<is_map<T>::value, string>::type to_string(T m) {
+typename enable_if<filter::is_map<T>::value, string>::type to_string(T m) {
     bool first = true;
     string res = CONTAINER + "{ ";
     for (auto &[k, v] : m) {
@@ -112,8 +130,9 @@ typename enable_if<is_map<T>::value, string>::type to_string(T m) {
 }
 
 template <class T>
-string to_string(stack<T> s) {
-    stack<T> t = s;
+typename enable_if<filter::is_supports_top<T>::value, string>::type to_string(
+    T v) {
+    T t = v;
     bool first = true;
     string res = CONTAINER + "{ ";
     while (!t.empty()) {
@@ -139,22 +158,8 @@ string to_string(queue<T> q) {
     return res;
 }
 
-template <class T>
-string to_string(priority_queue<T> pq) {
-    priority_queue<T> t = pq;
-    bool first = true;
-    string res = CONTAINER + "{ ";
-    while (!t.empty()) {
-        res += (first ? "" : SEP + ", " + CONTAINER) + _to_str(t.top());
-        t.pop();
-        first = false;
-    }
-    res += CONTAINER + " }" + RESET;
-    return res;
-}
-
-template <class T, class Tail>
-string to_string(pair<T, Tail> p) {
+template <class T, class F>
+string to_string(pair<T, F> p) {
     auto [first, second] = p;
     return CONTAINER + "[ " + _to_str(first) + SEP + ", " + CONTAINER +
            _to_str(second) + CONTAINER + " ]" + RESET;
@@ -176,8 +181,7 @@ string to_string(tuple<T...> t) {
 }
 
 template <class T>
-typename enable_if<!is_iterable<T>::value && !is_map<T>::value, string>::type
-to_string(T) {
+typename enable_if<!filter::is_implemented<T>::value, string>::type to_string(T) {
     return ERROR + "Not implemented" + RESET;
 }
 
