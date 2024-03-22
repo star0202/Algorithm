@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#ifdef LOCAL
+#ifdef STARCEA
 #include "debug.h"
 #else
-#define debug(...)
+#define debug(...) \
+    { __VA_ARGS__; }
 #endif
 
 using i64 = int64_t;

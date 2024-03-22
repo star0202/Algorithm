@@ -5,7 +5,15 @@
 - g++
 - PyPy3
 
-## [Validator](./validator)
+## [Tools](./tools)
+
+### [Debugger](./tools/debugger)
+
+C++ debugging macro, requires `-DSTARCEA` flag.
+
+For usage or output example, run [test.cpp](./tools/debugger/test.cpp).
+
+### [Validator](./tools/validator)
 
 Code validator for [Baekjoon Online Judge](https://www.acmicpc.net/).
 
@@ -25,8 +33,6 @@ My templates for Problem Solving and Competitive Programming.
 After editing the templates, run `python update.py` to update the VSCode snippets.
 
 ### C++
-
-- `debug.h`: Debugging macro. (put it in the same directory with the source code)
 
 - `ps.cpp`: Problem Solving template. snippet: `ps`
 - `cp.cpp`: Competitive Programming template. snippet: `cp`
