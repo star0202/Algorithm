@@ -1,6 +1,7 @@
 {
   "C_Cpp.default.cppStandard": "gnu++20",
   "C_Cpp.default.intelliSenseMode": "linux-gcc-x64",
+  "C_Cpp.autoAddFileAssociations": false,
   "code-runner.executorMap": {
     "cpp": "cd $dir && g++ $fileName -O2 -Wall -lm -static -std=c++20 -o $fileNameWithoutExt.out -DSTARCEA && ./$fileNameWithoutExt.out",
     "python": "cd $dir && pypy3 -W ignore -c \"import py_compile; py_compile.compile(r'$fileName')\" && pypy3 -W ignore $fileName"
