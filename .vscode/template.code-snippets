@@ -33,7 +33,8 @@
       "    while (t--) solve();",
       "}",
       ""
-    ]
+    ],
+    "hash": "121c40dd57915a60f196a0377fdd56f2e41d0df0e9637c616ecd1a73a4a55494"
   },
   "ps-py": {
     "scope": "python",
@@ -55,7 +56,8 @@
       "",
       "    stdout.write(\"\".join(_out))",
       ""
-    ]
+    ],
+    "hash": "ef9298f43d51ad8f56bb70a82879e4b3f549219765e86d5c841542a87131b01b"
   },
   "ps-cpp": {
     "scope": "cpp",
@@ -77,6 +79,7 @@
       "    $0",
       "}",
       ""
-    ]
+    ],
+    "hash": "dbe02e952972efc532ab1e2c085ae85ca57bc3d71a79efb616c9bade2d7ea7b0"
   }
 }
