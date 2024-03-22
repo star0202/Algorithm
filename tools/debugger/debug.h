@@ -181,7 +181,8 @@ string to_string(tuple<T...> t) {
 }
 
 template <class T>
-typename enable_if<!filter::is_implemented<T>::value, string>::type to_string(T) {
+typename enable_if<!filter::is_implemented<T>::value, string>::type to_string(
+    T) {
     return ERROR + "Not implemented" + RESET;
 }
 
