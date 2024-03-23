@@ -1,9 +1,17 @@
 {
   "configurations": [
     {
-      "name": "Linux",
+      "name": "Default",
       "includePath": ["${workspaceFolder}/**"],
       "defines": ["_DEBUG", "UNICODE", "_UNICODE", "LOCAL"],
+      "compilerPath": "/usr/bin/g++",
+      "cppStandard": "gnu++20",
+      "intelliSenseMode": "linux-gcc-x64"
+    },
+    {
+      "name": "Starcea",
+      "includePath": ["${workspaceFolder}/**"],
+      "defines": ["_DEBUG", "UNICODE", "_UNICODE", "LOCAL", "STARCEA"],
       "compilerPath": "/usr/bin/g++",
       "cppStandard": "gnu++20",
       "intelliSenseMode": "linux-gcc-x64"
