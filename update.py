@@ -1,7 +1,6 @@
 from json import dumps, loads
 from os import listdir, path
 from typing import TypedDict
-from hashlib import sha256 as _sha256
 
 DIR = "templates"
 COMMENT_MAPPING = {
@@ -19,11 +18,6 @@ class SnippetSchema(TypedDict):
     scope: str
     prefix: str
     body: list[str]
-    hash: str
-
-
-def sha256(data: str) -> str:
-    return _sha256(data.encode()).hexdigest()
 
 
 def comment(ext: str) -> str:
@@ -58,18 +52,11 @@ def main():
 
         with open(full_path, "r") as f:
             code = f.read()
-        
-        sha = sha256(code)
-
-        if json.get(f"{name}-{ext}", {}).get("hash") == sha:
-            print(f"Skipped {full_path}")
-            continue
 
         json[f"{name}-{ext}"] = {
             "scope": language(ext),
             "prefix": name,
             "body": code.replace(f"{comment(ext)} code here", "$0").splitlines() + [""],
-            "hash": sha,
         }
 
         print(f"Updated {full_path}")
