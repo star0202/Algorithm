@@ -10,5 +10,6 @@
   "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 4 }",
   "python.analysis.typeCheckingMode": "basic",
   "isort.importStrategy": "useBundled",
-  "black-formatter.importStrategy": "useBundled"
+  "black-formatter.importStrategy": "useBundled",
+  "editor.unicodeHighlight.nonBasicASCII": true
 }
