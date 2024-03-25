@@ -85,6 +85,9 @@ template <class T>
 struct is_supports_top<priority_queue<T>> : true_type {};
 
 template <class T>
+struct is_supports_top<priority_queue<T, vector<T>, greater<T>>> : true_type {};
+
+template <class T>
 struct is_implemented {
     static constexpr bool value =
         is_iterable<T>::value || is_map<T>::value || is_supports_top<T>::value;
