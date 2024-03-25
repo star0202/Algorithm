@@ -4,8 +4,7 @@ using namespace std;
 #ifdef STARCEA
 #include "debug.h"
 #else
-#define debug(...) \
-    { __VA_ARGS__; }
+#define debug(...)
 #endif
 
 using i64 = int64_t;
