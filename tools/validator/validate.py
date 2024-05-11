@@ -299,7 +299,11 @@ class Validator:
             return Result(ResultEnum.TLE, -1, -1, "")
 
 
-def cli() -> None:
+def main() -> int | None:
+    if len(argv) < 2:
+        print('Usage: python validate.py <file or "clean">')
+        return 1
+
     if argv[1] == "clean":
         for file in glob("_problems/*.json"):
             print(f"Removing {file}")
@@ -320,13 +324,16 @@ def cli() -> None:
     for i, r in enumerate(res):
         print(f"Sample {i + 1}: {r.result.value}")
 
-    if all(res):
-        print(HR)
+    if not all(res):
+        return 1
 
-        print("All samples passed!")
-        system(f"/mnt/c/Windows/System32/clip.exe < {argv[1]}")
-        print("Copied to clipboard!")
+    print(HR)
+
+    print("All samples passed!")
+    system(f"/mnt/c/Windows/System32/clip.exe < {argv[1]}")
+    print("Copied to clipboard!")
+
 
 
 if __name__ == "__main__":
-    cli()
+    exit(main())

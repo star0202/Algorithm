@@ -34,7 +34,7 @@ def language(ext: str) -> str:
     return LANGUAGE_MAPPING[ext]
 
 
-def main():
+def main() -> int | None:
     json: dict[str, SnippetSchema] = {}
 
     if path.exists(SNIPPET_FILE):
@@ -66,4 +66,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    exit(main())
