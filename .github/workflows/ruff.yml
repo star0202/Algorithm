@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
-      - name: Run Ruff check
+      - name: Run ruff check
         uses: chartboost/ruff-action@v1
         with:
           args: check
@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
-      - name: Run Ruff format
+      - name: Run ruff format
         uses: chartboost/ruff-action@v1
         with:
           args: format --check
