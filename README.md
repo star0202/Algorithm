@@ -4,8 +4,12 @@
 - Visual Studio Code
 - g++
 - PyPy3
+- Python3
+- Pyhton package manager (uv, pip, etc.)
 
 ## [Tools](./tools)
+
+In order to use python tools, you need to install dependencies in `requirements.txt`.
 
 ### [Debugger](./tools/debugger)
 
@@ -18,13 +22,6 @@ For usage or output example, run [test.cpp](./tools/debugger/test.cpp).
 Code validator for [Baekjoon Online Judge](https://www.acmicpc.net/).
 
 Keep the `_problems` directory in the same directory with the `validator` directory.
-
-```bash
-cd validator
-
-pip install -r requirements.txt
-python validate.py <code path> # only support C++ and PyPy3
-```
 
 ## [Templates](./templates)
 

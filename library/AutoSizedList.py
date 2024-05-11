@@ -60,12 +60,12 @@ class AutoSizedList(list[T]):
 
 
 if __name__ == "__main__":
-    l = AutoSizedList(lambda: AutoSizedList(int))
-    l[0][0] = 1
-    l[0][1] = 2
-    l[1][0] = 3
-    l[1][1] = 4
+    li = AutoSizedList(lambda: AutoSizedList(int))
+    li[0][0] = 1
+    li[0][1] = 2
+    li[1][0] = 3
+    li[1][1] = 4
 
-    print(l)
+    print(li)
 
-    print([id(x) for x in l])
+    print([id(x) for x in li])
