@@ -334,6 +334,5 @@ def main() -> int | None:
     print("Copied to clipboard!")
 
 
-
 if __name__ == "__main__":
     exit(main())
