@@ -7,9 +7,6 @@
     "python": "cd $dir && pypy3 -W ignore -c \"import py_compile; py_compile.compile(r'$fileName')\" && pypy3 -W ignore $fileName"
   },
   "code-runner.saveFileBeforeRun": true,
-  "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 4 }",
   "python.analysis.typeCheckingMode": "basic",
-  "isort.importStrategy": "useBundled",
-  "black-formatter.importStrategy": "useBundled",
   "editor.unicodeHighlight.nonBasicASCII": true
 }
