@@ -1,0 +1,14 @@
+---
+BasedOnStyle: Google
+AlignAfterOpenBracket: BlockIndent
+AlignConsecutiveMacros:
+  Enabled: true
+AllowShortBlocksOnASingleLine: Always
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+BinPackArguments: false
+BinPackParameters: false
+IndentWidth: 4
+InsertNewlineAtEOF: true
+PackConstructorInitializers: CurrentLine
+SpaceBeforeCpp11BracedList: true

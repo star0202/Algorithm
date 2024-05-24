@@ -18,27 +18,27 @@ using namespace std;
         _print_value(_it, __VA_ARGS__);                  \
     }
 
-#define ESC (string) "\033["
-#define RESET ESC + "0m"
-#define BOLD ESC + "1m"
-#define RED ESC + "31m"
-#define CYAN ESC + "36m"
-#define YELLOW ESC + "33m"
+#define ESC        (string) "\033["
+#define RESET      ESC + "0m"
+#define BOLD       ESC + "1m"
+#define RED        ESC + "31m"
+#define CYAN       ESC + "36m"
+#define YELLOW     ESC + "33m"
 #define BR_MAGENTA ESC + "95m"
-#define BR_GREEN ESC + "92m"
-#define BLUE ESC + "34m"
-#define GRAY ESC + "90m"
+#define BR_GREEN   ESC + "92m"
+#define BLUE       ESC + "34m"
+#define GRAY       ESC + "90m"
 
 #define HEADER BOLD + YELLOW
-#define ERROR BOLD + RED
+#define ERROR  BOLD + RED
 
-#define DEFAULT BR_MAGENTA
-#define STRING BR_GREEN
-#define BOOL BR_GREEN
+#define DEFAULT   BR_MAGENTA
+#define STRING    BR_GREEN
+#define BOOL      BR_GREEN
 #define CONTAINER BLUE
-#define SEP GRAY
-#define OPERATOR BOLD + CYAN
-#define INDENT "  "
+#define SEP       GRAY
+#define OPERATOR  BOLD + CYAN
+#define INDENT    "  "
 
 namespace filter {
 
@@ -134,7 +134,8 @@ typename enable_if<filter::is_map<T>::value, string>::type to_string(T m) {
 
 template <class T>
 typename enable_if<filter::is_supports_top<T>::value, string>::type to_string(
-    T v) {
+    T v
+) {
     T t = v;
     bool first = true;
     string res = CONTAINER + "{ ";
@@ -178,14 +179,16 @@ string to_string(tuple<T...> t) {
               first = false),
              ...);
         },
-        t);
+        t
+    );
     res += CONTAINER + " }" + RESET;
     return res;
 }
 
 template <class T>
 typename enable_if<!filter::is_implemented<T>::value, string>::type to_string(
-    T) {
+    T x
+) {
     return ERROR + "Not implemented" + RESET;
 }
 
