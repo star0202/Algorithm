@@ -11,4 +11,5 @@ BinPackParameters: false
 IndentWidth: 4
 InsertNewlineAtEOF: true
 PackConstructorInitializers: CurrentLine
+RemoveBracesLLVM: true
 SpaceBeforeCpp11BracedList: true
