@@ -17,7 +17,9 @@ jobs:
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
-      - name: Run clang-format
-        uses: jidicula/clang-format-action@v4.13.0
+      - name: Install clang-format 18
+        uses: aminya/setup-cpp@v1
         with:
-          clang-format-version: 18
+          clangformat: 18.1.6
+      - name: Run clang-format
+        run: clang-format **/*.cpp **/*.h -n --Werror
