@@ -1,1 +1,5 @@
 exclude = ["templates"]
+lint.ignore = [
+    "E731", # lambda-assignment
+    "E741", # ambiguous-variable-name
+]
