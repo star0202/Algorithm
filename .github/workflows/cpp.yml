@@ -1,0 +1,23 @@
+name: C++ (clang-format)
+
+on:
+  push:
+    paths:
+      - "**/*.cpp"
+      - "**/*.h"
+  pull_request:
+    paths:
+      - "**/*.cpp"
+      - "**/*.h"
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+      - name: Run clang-format
+        uses: jidicula/clang-format-action@v4.13.0
+        with:
+          clang-format-version: 18

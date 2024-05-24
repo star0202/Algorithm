@@ -1,6 +1,12 @@
-name: Ruff
+name: Python (Ruff)
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - "**/*.py"
+  pull_request:
+    paths:
+      - "**/*.py"
 
 jobs:
   check:
