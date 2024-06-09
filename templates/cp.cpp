@@ -2,7 +2,7 @@
 using namespace std;
 
 #ifdef STARCEA
-#include "debug.h"
+#include "debug.hpp"
 #else
 #define debug(...)
 #endif
