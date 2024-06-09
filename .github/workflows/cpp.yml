@@ -22,4 +22,4 @@ jobs:
         with:
           clangformat: 18.1.6
       - name: Run clang-format
-        run: clang-format **/*.cpp **/*.hpp -n --Werror
+        run: clang-format-18 **/*.cpp **/*.hpp -n --Werror
