@@ -13,7 +13,7 @@ In order to use python tools, you need to install dependencies in `requirements.
 
 ### [Debugger](./tools/debugger)
 
-C++ debugging macro, requires `-DSTARCEA` flag.
+C++ debugging macro, requires `-DSTARCEA` flag. (to avoid using inexistent things, do not define `STARCEA` in intellisense)
 
 For usage or output example, run [test.cpp](./tools/debugger/test.cpp).
 
