@@ -3,84 +3,89 @@
     colormap is optimized with vscode theme "Gruvbox Dark Hard"
 */
 
+#ifndef STARCEA
+#include <bits/stdc++.h>
+using namespace std;
+#endif
+
 #define debug(...)                                       \
     {                                                    \
         _print_header(__FILE__, __LINE__, __FUNCTION__); \
-        std::string _s = #__VA_ARGS__;                   \
-        std::replace(_s.begin(), _s.end(), ',', ' ');    \
-        std::stringstream _ss(_s);                       \
-        std::istream_iterator<std::string> _it(_ss);     \
+        string _s = #__VA_ARGS__;                   \
+        replace(_s.begin(), _s.end(), ',', ' ');    \
+        stringstream _ss(_s);                       \
+        istream_iterator<string> _it(_ss);     \
         _print_value(_it, __VA_ARGS__);                  \
     }
 
-const std::string ESC = "\033[";
-const std::string RESET = ESC + "0m";
-const std::string BOLD = ESC + "1m";
-const std::string RED = ESC + "31m";
-const std::string CYAN = ESC + "36m";
-const std::string YELLOW = ESC + "33m";
-const std::string BR_MAGENTA = ESC + "95m";
-const std::string BR_GREEN = ESC + "92m";
-const std::string BLUE = ESC + "34m";
-const std::string GRAY = ESC + "90m";
+const string ESC = "\033[";
+const string RESET = ESC + "0m";
+const string BOLD = ESC + "1m";
+const string RED = ESC + "31m";
+const string CYAN = ESC + "36m";
+const string YELLOW = ESC + "33m";
+const string BR_MAGENTA = ESC + "95m";
+const string BR_GREEN = ESC + "92m";
+const string BLUE = ESC + "34m";
+const string GRAY = ESC + "90m";
 
-const std::string HEADER = BOLD + YELLOW;
-const std::string ERROR = BOLD + RED;
+const string HEADER = BOLD + YELLOW;
+const string ERROR = BOLD + RED;
 
-const std::string DEFAULT = BR_MAGENTA;
-const std::string STRING = BR_GREEN;
-const std::string BOOL = BR_GREEN;
-const std::string CONTAINER = BLUE;
-const std::string SEP = GRAY;
-const std::string OPERATOR = BOLD + CYAN;
-const std::string INDENT = "  ";
+const string DEFAULT = BR_MAGENTA;
+const string STRING = BR_GREEN;
+const string BOOL = BR_GREEN;
+const string CONTAINER = BLUE;
+const string SEP = GRAY;
+const string OPERATOR = BOLD + CYAN;
+const string INDENT = "  ";
 
 namespace filter {
 template <class T>
-struct is_iterable : std::false_type {};
+struct is_iterable : false_type {};
 
 template <class T, size_t SZ>
-struct is_iterable<std::array<T, SZ>> : std::true_type {};
+struct is_iterable<array<T, SZ>> : true_type {};
 
 template <class T>
-struct is_iterable<std::set<T>> : std::true_type {};
+struct is_iterable<set<T>> : true_type {};
 
 template <class T>
-struct is_iterable<std::unordered_set<T>> : std::true_type {};
+struct is_iterable<unordered_set<T>> : true_type {};
 
 template <class T>
-struct is_iterable<std::multiset<T>> : std::true_type {};
+struct is_iterable<multiset<T>> : true_type {};
 
 template <class T>
-struct is_iterable<std::deque<T>> : std::true_type {};
+struct is_iterable<deque<T>> : true_type {};
 
 template <class T>
-struct is_iterable<std::vector<T>> : std::true_type {};
+struct is_iterable<vector<T>> : true_type {};
 
 template <class T>
-struct is_iterable<std::list<T>> : std::true_type {};
+struct is_iterable<list<T>> : true_type {};
 
 template <class T>
-struct is_map : std::false_type {};
+struct is_map : false_type {};
 
 template <class K, class V>
-struct is_map<std::map<K, V>> : std::true_type {};
+struct is_map<map<K, V>> : true_type {};
 
 template <class K, class V>
-struct is_map<std::unordered_map<K, V>> : std::true_type {};
+struct is_map<unordered_map<K, V>> : true_type {};
 
 template <class T>
-struct is_supports_top : std::false_type {};
+struct is_supports_top : false_type {};
 
 template <class T>
-struct is_supports_top<std::stack<T>> : std::true_type {};
+struct is_supports_top<stack<T>> : true_type {};
 
 template <class T>
-struct is_supports_top<std::priority_queue<T>> : std::true_type {};
+struct is_supports_top<priority_queue<T>> : true_type {};
 
 template <class T>
-struct is_supports_top<std::priority_queue<T, std::vector<T>, std::greater<T>>>
-    : std::true_type {};
+struct is_supports_top<priority_queue<T, vector<T>, greater<T>>>
+    : true_type {};
 
 template <class T>
 struct is_implemented {
@@ -90,23 +95,23 @@ struct is_implemented {
 }  // namespace filter
 
 template <class T>
-std::string _to_str(T x);
+string _to_str(T x);
 
-std::string to_string(std::string s) { return STRING + '"' + s + '"' + RESET; }
+string to_string(string s) { return STRING + '"' + s + '"' + RESET; }
 
-std::string to_string(char c) { return STRING + "'" + c + "'" + RESET; }
+string to_string(char c) { return STRING + "'" + c + "'" + RESET; }
 
-std::string to_string(char *s) { return to_string((std::string)s); }
+string to_string(char *s) { return to_string((string)s); }
 
-std::string to_string(const char *s) { return to_string((std::string)s); }
+string to_string(const char *s) { return to_string((string)s); }
 
-std::string to_string(bool b) { return (b ? "true" : "false"); }
+string to_string(bool b) { return (b ? "true" : "false"); }
 
 template <class T>
-typename std::enable_if<filter::is_iterable<T>::value, std::string>::type
+typename enable_if<filter::is_iterable<T>::value, string>::type
 to_string(T v) {
     bool first = true;
-    std::string res = CONTAINER + "{ ";
+    string res = CONTAINER + "{ ";
     for (auto &x : v) {
         res += (first ? "" : SEP + ", " + CONTAINER) + _to_str(x);
         first = false;
@@ -116,11 +121,11 @@ to_string(T v) {
 }
 
 template <class T>
-typename std::enable_if<filter::is_map<T>::value, std::string>::type to_string(
+typename enable_if<filter::is_map<T>::value, string>::type to_string(
     T m
 ) {
     bool first = true;
-    std::string res = CONTAINER + "{ ";
+    string res = CONTAINER + "{ ";
     for (auto &[k, v] : m) {
         res += (first ? "" : SEP + ", " + CONTAINER) + _to_str(k) + SEP + ": " +
                CONTAINER + _to_str(v);
@@ -131,11 +136,11 @@ typename std::enable_if<filter::is_map<T>::value, std::string>::type to_string(
 }
 
 template <class T>
-typename std::enable_if<filter::is_supports_top<T>::value, std::string>::type
+typename enable_if<filter::is_supports_top<T>::value, string>::type
 to_string(T v) {
     T t = v;
     bool first = true;
-    std::string res = CONTAINER + "{ ";
+    string res = CONTAINER + "{ ";
     while (!t.empty()) {
         res += (first ? "" : SEP + ", " + CONTAINER) + _to_str(t.top());
         t.pop();
@@ -146,10 +151,10 @@ to_string(T v) {
 }
 
 template <class T>
-std::string to_string(std::queue<T> q) {
+string to_string(queue<T> q) {
     queue<T> t = q;
     bool first = true;
-    std::string res = CONTAINER + "{ ";
+    string res = CONTAINER + "{ ";
     while (!t.empty()) {
         res += (first ? "" : SEP + ", " + CONTAINER) + _to_str(t.front());
         t.pop();
@@ -160,16 +165,16 @@ std::string to_string(std::queue<T> q) {
 }
 
 template <class T, class F>
-std::string to_string(std::pair<T, F> p) {
+string to_string(pair<T, F> p) {
     auto [first, second] = p;
     return CONTAINER + "{ " + _to_str(first) + SEP + ", " + CONTAINER +
            _to_str(second) + CONTAINER + " }" + RESET;
 }
 
 template <class... T>
-std::string to_string(std::tuple<T...> t) {
+string to_string(tuple<T...> t) {
     bool first = true;
-    std::string res = CONTAINER + "{ ";
+    string res = CONTAINER + "{ ";
     apply(
         [&](auto &&...args) {
             ((res += (first ? "" : SEP + ", " + CONTAINER) + _to_str(args),
@@ -183,25 +188,25 @@ std::string to_string(std::tuple<T...> t) {
 }
 
 template <class T>
-typename std::enable_if<!filter::is_implemented<T>::value, std::string>::type
+typename enable_if<!filter::is_implemented<T>::value, string>::type
 to_string(T x) {
     return ERROR + "Not implemented" + RESET;
 }
 
 template <class T>
-std::string _to_str(T x) {
+string _to_str(T x) {
     return DEFAULT + to_string(x) + RESET;
 }
 
-void _print_header(std::string file, int line, std::string func) {
-    std::cerr << HEADER << "[" << file << ":" << line
+void _print_header(string file, int line, string func) {
+    cerr << HEADER << "[" << file << ":" << line
               << (func == "main" ? "" : " - " + func) << "]" << RESET << "\n";
 }
 
-void _print_value(std::istream_iterator<std::string> it) {}
+void _print_value(istream_iterator<string> it) {}
 
 template <class T, class... Tail>
-void _print_value(std::istream_iterator<std::string> it, T a, Tail... v) {
+void _print_value(istream_iterator<string> it, T a, Tail... v) {
     cerr << INDENT << *it << OPERATOR << " = " << RESET << _to_str(a) << "\n";
     _print_value(++it, v...);
 }
