@@ -4,11 +4,11 @@ on:
   push:
     paths:
       - "**/*.cpp"
-      - "**/*.h"
+      - "**/*.hpp"
   pull_request:
     paths:
       - "**/*.cpp"
-      - "**/*.h"
+      - "**/*.hpp"
 
 jobs:
   format:
@@ -22,4 +22,4 @@ jobs:
         with:
           clangformat: 18.1.6
       - name: Run clang-format
-        run: clang-format **/*.cpp **/*.h -n --Werror
+        run: clang-format **/*.cpp **/*.hpp -n --Werror

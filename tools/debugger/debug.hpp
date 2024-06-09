@@ -11,10 +11,10 @@ using namespace std;
 #define debug(...)                                       \
     {                                                    \
         _print_header(__FILE__, __LINE__, __FUNCTION__); \
-        string _s = #__VA_ARGS__;                   \
-        replace(_s.begin(), _s.end(), ',', ' ');    \
-        stringstream _ss(_s);                       \
-        istream_iterator<string> _it(_ss);     \
+        string _s = #__VA_ARGS__;                        \
+        replace(_s.begin(), _s.end(), ',', ' ');         \
+        stringstream _ss(_s);                            \
+        istream_iterator<string> _it(_ss);               \
         _print_value(_it, __VA_ARGS__);                  \
     }
 
@@ -84,8 +84,7 @@ template <class T>
 struct is_supports_top<priority_queue<T>> : true_type {};
 
 template <class T>
-struct is_supports_top<priority_queue<T, vector<T>, greater<T>>>
-    : true_type {};
+struct is_supports_top<priority_queue<T, vector<T>, greater<T>>> : true_type {};
 
 template <class T>
 struct is_implemented {
@@ -108,8 +107,7 @@ string to_string(const char *s) { return to_string((string)s); }
 string to_string(bool b) { return (b ? "true" : "false"); }
 
 template <class T>
-typename enable_if<filter::is_iterable<T>::value, string>::type
-to_string(T v) {
+typename enable_if<filter::is_iterable<T>::value, string>::type to_string(T v) {
     bool first = true;
     string res = CONTAINER + "{ ";
     for (auto &x : v) {
@@ -121,9 +119,7 @@ to_string(T v) {
 }
 
 template <class T>
-typename enable_if<filter::is_map<T>::value, string>::type to_string(
-    T m
-) {
+typename enable_if<filter::is_map<T>::value, string>::type to_string(T m) {
     bool first = true;
     string res = CONTAINER + "{ ";
     for (auto &[k, v] : m) {
@@ -136,8 +132,9 @@ typename enable_if<filter::is_map<T>::value, string>::type to_string(
 }
 
 template <class T>
-typename enable_if<filter::is_supports_top<T>::value, string>::type
-to_string(T v) {
+typename enable_if<filter::is_supports_top<T>::value, string>::type to_string(
+    T v
+) {
     T t = v;
     bool first = true;
     string res = CONTAINER + "{ ";
@@ -188,8 +185,9 @@ string to_string(tuple<T...> t) {
 }
 
 template <class T>
-typename enable_if<!filter::is_implemented<T>::value, string>::type
-to_string(T x) {
+typename enable_if<!filter::is_implemented<T>::value, string>::type to_string(
+    T x
+) {
     return ERROR + "Not implemented" + RESET;
 }
 
@@ -200,7 +198,7 @@ string _to_str(T x) {
 
 void _print_header(string file, int line, string func) {
     cerr << HEADER << "[" << file << ":" << line
-              << (func == "main" ? "" : " - " + func) << "]" << RESET << "\n";
+         << (func == "main" ? "" : " - " + func) << "]" << RESET << "\n";
 }
 
 void _print_value(istream_iterator<string> it) {}
