@@ -9,7 +9,7 @@ using namespace std;
 
 using i64 = int64_t;
 
-constexpr int _PREC = 0; 
+constexpr int _PREC = 0;
 
 // #define int i64
 
