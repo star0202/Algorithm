@@ -1,14 +1,6 @@
 name: C++ (clang-format)
 
-on:
-  push:
-    paths:
-      - "**/*.cpp"
-      - "**/*.hpp"
-  pull_request:
-    paths:
-      - "**/*.cpp"
-      - "**/*.hpp"
+on: [push, pull_request]
 
 jobs:
   format:
