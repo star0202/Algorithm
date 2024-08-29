@@ -37,10 +37,6 @@ def language(ext: str) -> str:
 def main() -> int | None:
     json: dict[str, SnippetSchema] = {}
 
-    if path.exists(SNIPPET_FILE):
-        with open(SNIPPET_FILE, "r") as f:
-            json = loads(f.read())
-
     for file in listdir(DIR):
         full_path = path.join(DIR, file)
 

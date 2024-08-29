@@ -7,7 +7,7 @@
       "using namespace std;",
       "",
       "#ifdef STARCEA",
-      "#include \"debug.hpp\"",
+      "#include \"../debug.hpp\"",
       "#else",
       "#define debug(...)",
       "#endif",
@@ -34,25 +34,14 @@
       ""
     ]
   },
-  "ps-py": {
+  "py-py": {
     "scope": "python",
-    "prefix": "ps",
+    "prefix": "py",
     "body": [
-      "from sys import stdin, stdout",
-      "",
+      "stdin = open(0)",
       "input = lambda: stdin.readline().rstrip()",
-      "_out: list[str] = []",
-      "print = lambda *v, sep=\" \", end=\"\\n\": _out.append(sep.join(map(str, v)) + end)",
       "",
-      "",
-      "def main() -> None:",
-      "    $0",
-      "",
-      "",
-      "if __name__ == \"__main__\":",
-      "    main()",
-      "",
-      "    stdout.write(\"\".join(_out))",
+      "$0",
       ""
     ]
   },
